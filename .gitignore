@@ -2,3 +2,5 @@
 .idea
 venv
 secret_info.py
+apitest.py
+__pycache__/
