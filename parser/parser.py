@@ -44,16 +44,13 @@ async def make_message(forecast_data: Dict):
 
 
 async def make_prognoses(num_of_days: int, user_location: str):
-    logging.info(user_location)
     location_key = await get_location_key(user_location)
-    logging.info(location_key)
     forecast = await get_weather(location_key['Key'], num_of_days)
     return forecast
 
 
 async def make_forecast(day: str, user_location: str):
     result = await make_prognoses(5, user_location)
-    logging.info(result)
     if day == 'today':
         return await make_message(result['DailyForecasts'][0])
     elif day == 'tomorrow':
