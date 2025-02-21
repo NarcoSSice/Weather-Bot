@@ -6,6 +6,7 @@ from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from database.models import UserLocation
+from database.redis_cache import Cache
 
 
 class LocationState(StatesGroup):
@@ -37,6 +38,8 @@ async def update_user_location(message: types.Message, state: FSMContext, sessio
     )
     await session.execute(query)
     await session.commit()
+    if await Cache.get(message.from_user.id):
+        await Cache.clear(message.from_user.id)
 
 
 async def get_user_location(user_id: int, session: AsyncSession):

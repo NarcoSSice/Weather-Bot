@@ -1,3 +1,4 @@
+import logging
 from aiogram import types, Router, F
 from aiogram.filters import CommandStart, Command, or_f
 from aiogram.fsm.context import FSMContext
@@ -64,21 +65,21 @@ async def give_forecast(message: types.Message):
 @router.message(or_f(Command('today'), F.text.lower() == 'прогноз на сьогодні'))
 async def today_forecast(message: types.Message, state: FSMContext):
     user_loc = await state.get_data()
-    forecast = await make_forecast('today', user_loc.get('authorized_user'))
+    forecast = await make_forecast('today', user_loc.get('authorized_user'), message.from_user.id)
     await message.answer(text=forecast)
 
 
 @router.message(or_f(Command('tomorrow'), F.text.lower() == 'прогноз на завтра'))
 async def tomorrow_forecast(message: types.Message, state: FSMContext):
     user_loc = await state.get_data()
-    forecast = await make_forecast('tomorrow', user_loc.get('authorized_user'))
+    forecast = await make_forecast('tomorrow', user_loc.get('authorized_user'), message.from_user.id)
     await message.answer(text=forecast)
 
 
 @router.message(or_f(Command('5days'), F.text.lower() == 'прогноз на 5 днів'))
 async def five_days_forecast(message: types.Message, state: FSMContext):
     user_loc = await state.get_data()
-    forecast = await make_forecast('5days', user_loc.get('authorized_user'))
+    forecast = await make_forecast('5days', user_loc.get('authorized_user'), message.from_user.id)
     await message.answer(text=forecast)
 
 
